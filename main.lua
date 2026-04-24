@@ -954,7 +954,7 @@ end
 
 BgScale = 1
 
-require 'data/base'
+require 'data'
 SHADER = require 'module/shader'
 GAME = require 'module/game'
 

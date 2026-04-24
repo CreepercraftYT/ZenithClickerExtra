@@ -500,12 +500,13 @@ function easyMode()
     return "SUCCESSFULLY LOADED ZCEM!"
 end
 
-ModData = require 'data/mod'
-ComboData = require 'data/combo'
-Fatigue = require 'data/fatigue'
-RevivePrompts = require 'data/revive'
-Achievements = require 'data/achievement'
-BadgeData = require 'data/badge'
-DevScore = require 'data/devscore'
-DevCommentary = require 'data/devcommentary'
-DevCommentaryLink = require 'data/devCommentaryLink'
+local require = simpRequire((...) .. "/")
+ModData = require 'mod'
+ComboData = require 'combo'
+Fatigue = require 'fatigue'
+RevivePrompts = require 'revive'
+Achievements = require 'achievement'
+BadgeData = require 'badge'
+DevScore = require 'devscore'
+DevCommentary = require 'devcommentary'
+DevCommentaryLink = require 'devCommentaryLink'
