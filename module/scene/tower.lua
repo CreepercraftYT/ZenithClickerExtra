@@ -199,7 +199,7 @@ local function keyTrigger(key)
                 GAME.start()
             end
         elseif key == '`' then
-            if GAME.playing then
+            if GAME.playing or GAME.badTime then
                 SFX.play('no')
             else
                 if URM and M.VL == 2 and not UltraVlCheck('stat') then return end
@@ -210,7 +210,7 @@ local function keyTrigger(key)
             W._pressTime = W._pressTimeMax * 2
             W._hoverTime = W._hoverTimeMax
         elseif key == 'tab' then
-            if GAME.playing then
+            if GAME.playing or GAME.badTime then
                 SFX.play('no')
             else
                 if URM and M.VL == 2 and not UltraVlCheck('achv') then return end
@@ -221,7 +221,7 @@ local function keyTrigger(key)
             W._pressTime = W._pressTimeMax * 2
             W._hoverTime = W._hoverTimeMax
         elseif key == 'f1' then
-            if GAME.playing then
+            if GAME.playing or GAME.badTime then
                 SFX.play('no')
             else
                 if URM and M.VL == 2 and not UltraVlCheck('conf') then return end
@@ -232,7 +232,7 @@ local function keyTrigger(key)
             W._pressTime = W._pressTimeMax * 2
             W._hoverTime = W._hoverTimeMax
         elseif key == 'f2' then
-            if GAME.playing then
+            if GAME.playing or GAME.badTime then
                 SFX.play('no')
             else
                 if URM and M.VL == 2 and not UltraVlCheck('reset') then return end
@@ -277,12 +277,13 @@ local function keyTrigger(key)
                 if combo == 0 then
                     SFX.play('no')
                 elseif combo < 16 then
-                    SFX.play('combo_' .. combo .. (power and '_power' or ''))
+                    SFX.play('combo_' .. combo .. (power and '_power' or ''), 1, 0, Tone((power and (combo-1)/5 or 0)))
                 else
-                    SFX.play('combo_16' .. (power and '_power' or ''))
+                    SFX.play('combo_16' .. (power and '_power' or ''), 1, 0, Tone((power and (combo-1)/5 or 0)))
                     scene.widgetList.easy.x = -100
                     scene.widgetList.easy:resetPos()
                     if power then
+                        GAME.fallout = true
                         scene.widgetList.stat.x = -100
                         scene.widgetList.stat:resetPos()
                         scene.widgetList.achv.x = -100
@@ -308,6 +309,7 @@ local function keyTrigger(key)
                         GAME.invisCard = false
                         GAME.closeCard = false
                         local set = {}
+                        applyCombo(set)
                         set.ultra = true
                         TABLE.insert(set, 'rEX')
                         TABLE.insert(set, 'rNH')
@@ -327,6 +329,8 @@ local function keyTrigger(key)
                             SFX.play('bombdetonate')
                             end
                         )
+                        MSG.clear()
+                        MSG("dark", "WHAT HAVE YOU DONE!?", 0.26)
                     elseif ACHV.could_you_not then
                         MSG("dark", "COULD YOU NOT?",10)
                     else
@@ -338,9 +342,9 @@ local function keyTrigger(key)
                     local str = "Select upright mods to make Easy first!"
                     if power then
                         MSG.clear()
-                        str = "WHAT DO YOU THINK YOU ARE DOING?"
+                        if combo == 0 then str = "?" elseif combo > 7 then str = "WHAT DO YOU THINK YOU ARE DOING" else str = "What do you think you are doing" end
                         for i = 1, combo do
-                            str = str .. "?"
+                            str = str .. (i%2 == 0 and "!" or "?")
                         end
                     end
                     MSG("dark", str, 3)

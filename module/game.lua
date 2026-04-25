@@ -153,6 +153,7 @@ local ins, rem = table.insert, table.remove
 ---@field multiplePiecesActive boolean True if multiple pieces are active together. If so, disables achievements and record submission viability
 ---@field badTime boolean? True if ZCEM basement is active
 ---@field badTimeStarted boolean? True if ZCEM basement run has started
+---@field fallout boolean? for card effect
 local GAME = {
     forfeitTimer = 0,
     exTimer = 0,
@@ -1298,7 +1299,7 @@ function GAME.addXP(xp, falseCommit)
         TEXTS.rank:set("R-" .. GAME.rank)
         SFX.play('speed_up_' .. (speedupSFX[GAME.rank] or 4), .4 + .5 * GAME.xpLockLevel / (GAME.xpLockLevelMax + 1) * min(GAME.rank / 4, 1))
         -- if GAME.height > 0 and not GAME.gigaspeedEntered and GAME.rank >= GigaSpeedReq[max(GAME.floor, (GAME.negFloor - 1) % 10 + 1)] then
-        if not GAME.gigaspeed and GAME.height > 0 and GAME.rank >= GigaSpeedReq[GAME.floor] then
+        if not GAME.gigaspeed and (GAME.height > 0 or GAME.badTime) and GAME.rank >= GigaSpeedReq[GAME.floor] then
             GAME.setGigaspeedAnim(true)
             GAME.refreshRPC()
         end
@@ -3131,6 +3132,7 @@ function GAME.start()
     SCN.scenes.tower.widgetList.reset:setVisible(true)
     if GAME.badTime then
         GAME.badTimeStarted = true
+        GAME.fallout = false
     end
 
     local attackMulMod = 1
@@ -4260,6 +4262,7 @@ function GAME.update(dt)
                 end
                 if GAME.height < NegFloors[GAME.negFloor].bottom and not GAME.einvisUI then GAME.downFloor() end
                 if GAME.height < NegEvents[GAME.negEvent].h then GAME.nextNegEvent() end
+                if GAME.height <= 1800 and GAME.badTime then STAT.easyModeClicker = true end
             end
         else
             GAME.height = GAME.height + GAME.rank / 4 * passiveClimbSpeedMod * dt * (GAME.einvisUI and 1 or icLerp(GAME.eglassCard and 0.5 or 1, GAME.eglassCard and 3 or 6, Floors[GAME.floor].top - GAME.height))
