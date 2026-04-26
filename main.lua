@@ -1176,9 +1176,9 @@ end
 function RefreshBGM(mode)
     if not BGM.isPlaying() then return end
     local zp = GAME.getComboZP(GAME.getHand(not GAME.playing))
-    local modifiedZP = ((zp * (GAME.mod.AS > 0 and 1.41 or 1) * (GAME.mod.DP > 0 and 1.26 or 1))-2.15)/7
+    local modifiedZP = (((zp >= 1.95 and zp or 0) * (GAME.mod.AS > 0 and 1.41 or 1)--[[ * (GAME.mod.DP > 0 and 1.26 or 1)]]))/10.1
     local uneasy = (URM and M.EX == -1 and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2) and not GAME.anyRev and not GAME.playing
-    local uneasyMusic = uneasy and zp > 0
+    local uneasyMusic = uneasy and modifiedZP > 0
     local pitch = M.GV < 0 and 2^(-1/2) or M.GV > 0 and 2 ^ ((URM and M.GV == 2 and 3 or M.GV) / 12) or 1 
     if uneasy then
         pitch = pitch * 1.0145
@@ -1198,9 +1198,9 @@ function RefreshBGM(mode)
     BGM.set('all', 'highgain', (M.IN == 0 or GAME.fallout) and 1 or (M.IN == 1 or M.IN == -1) and .8 or not URM and .626 or .55, justBegin and 0 or .626)
     if BgmPlaying == 'f0' then
         local revMode = mode == 'f0r' or RevMusicMode()
-        BGM.set('all', 'volume', revMode and 0 or uneasyMusic and MATH.max(MATH.min((1-modifiedZP), 1),0) or 1, 2.6)
+        BGM.set('all', 'volume', revMode and 0 or uneasyMusic and MATH.max(MATH.min((1-(modifiedZP/0.7)), 1),0) or 1, 2.6)
         -- Trevor Smithy > to ~=
-        BGM.set('expert', 'volume', M.EX > 0 and 1 or uneasy and MATH.max(MATH.min(modifiedZP, 1),0) or 0, .26)
+        BGM.set('expert', 'volume', M.EX > 0 and 1 or uneasyMusic and MATH.max(MATH.min(modifiedZP/0.7, 1),0) or 0, .26)
         BGM.set('piano', 'volume', (M.NH == 0 or GAME.fallout) and 1 or (M.NH == 1 or M.NH == -1) and .26 or 0)
         BGM.set('piano2', 'pitch', 2 * pitch, 0)
         BGM.set('piano2', 'volume', (M.DP ~= 0 or VALENTINE and not revMode) and .626 or 0, .26)

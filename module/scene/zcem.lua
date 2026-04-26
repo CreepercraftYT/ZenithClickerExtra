@@ -415,6 +415,7 @@ scene.widgetList = {
             MusicPlayer = not MusicPlayer
             bpmMode = true
             refreshWidgets()
+            IssueAchv('music_man')
         end,
     },
     -- BPM button is shared with MP options
@@ -929,7 +930,7 @@ scene.widgetList = {
                 SFX.play('allclear')
                 MSG('dark', 'All Clear')
             else
-                if combo == 0 or STAT.unlockAll then
+                if combo == 0 or (STAT.unlockAll and ACHV.lazy_bastard) then
                     MSG.clear()
                     MSG("dark", "What do you want me to deselect?")
                     SFX.play('no')
@@ -942,7 +943,11 @@ scene.widgetList = {
                     MSG("dark", str)
                     SFX.play('combo_' .. combo)
                 else
-                    MSG("dark", "Fine, okay, everything is unlocked now.")
+                    if not ACHV.lazy_bastard then
+                        IssueAchv('lazy_bastard')
+                    else
+                        MSG("dark", "Fine, okay, everything is unlocked now.")
+                    end
                     GAME.unlockAll()
                     SFX.play('combo_16')
                 end

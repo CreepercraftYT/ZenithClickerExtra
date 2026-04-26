@@ -3433,6 +3433,10 @@ function GAME.finish(reason)
         IssueAchv('multiple_pieces')
     end
 
+    if M.DH == 2 and STAT.easyName then
+        IssueAchv('easy_name')
+    end
+
     GAME.playing = false
     if M.DH == 2 then GAME.finishTime = love.timer.getTime() end
     ins(GAME.secTime, GAME.floorTime)

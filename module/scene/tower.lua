@@ -446,6 +446,7 @@ local function generateRandomCombo()
         set.ultra = not URM
         SFX.play(set.ultra and 'zenith_split_missed' or 'zenith_split_cleared')
     end
+    if smithyMode then IssueAchv('biased') end
     return set
 end
 
@@ -1032,7 +1033,7 @@ function scene.draw()
         end
 
         -- MP & ZP Preview
-        if not GAME.playing and STAT.maxFloor >= 10 then
+        if not GAME.playing and STAT.maxFloor >= 10 and not GAME.badTime then
             gc_setColor(TextColor)
             gc_setAlpha(.12 + abs(math.log(GAME.comboZP)) * (GAME.einvisUI and 1 or 2))
             gc_draw(TEXTS.zpPreview, 1370, 275, 0, 1, 1, TEXTS.zpPreview:getWidth())
@@ -1677,7 +1678,7 @@ function scene.overDraw()
         end
 
         -- UI
-        if GAME.uiHide < 1 then
+        if GAME.uiHide < 1 and not GAME.badTime then
             local exT = GAME.exTimer
             local revT = GAME.revTimer
             local d = GAME.uiHide * 70
