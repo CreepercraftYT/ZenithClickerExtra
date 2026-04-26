@@ -2132,6 +2132,25 @@ Achievements = {
         realHide = function() return not ACHV.ronna end,
         type = 'issued',
     },
+    { title = "Easy Mode - Issued (v1.2) (No CR)" },
+    { -- what_have_you_done
+        id = 'what_have_you_done',
+        name = "WHAT HAVE YOU DONE!?",
+        desc = [[Activate BAD TIME]]--[[Bomb the Zenith Tower, destroying all the widgets and forceably enabling "BAD TIME", by trying to reverse the EASY button.]],
+        quote = [[You feel like you're going to have a bad time.]],
+        credit = "@TrevorSmithy",
+        type = 'issued',
+        hide = TRUE,
+    },
+    { -- multiple_pieces
+        id = 'multiple_pieces',
+        name = "Multiple Pieces???",
+        desc = [[Finish a run with multiple pieces active without having MULTIPLE PIECES!!! appear]],
+        quote = [["YOU THINK YOU'RE CLEVER? JUST BECAUSE I CAN'T SEE DOWN THERE? FINE..."]],
+        credit = "@TrevorSmithy",
+        type = 'issued',
+        hide = TRUE,
+    },
 }
 
 local compFunc = {

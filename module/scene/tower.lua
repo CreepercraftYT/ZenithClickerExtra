@@ -330,8 +330,21 @@ local function keyTrigger(key)
                             SFX.play('bombdetonate')
                             end
                         )
+                        if not ACHV.could_you_not then IssueAchv('could_you_not', true) end
                         MSG.clear()
-                        MSG("dark", "WHAT HAVE YOU DONE!?", 0.26)
+                        if ACHV.what_have_you_done then
+                            MSG("dark", "WHAT HAVE YOU DONE!?", 0.26)
+                        else
+                            IssueAchv('what_have_you_done', true)
+                            local A = Achievements['what_have_you_done']
+                            local msg = { 'achv_badTime', {
+                                COLOR.L, A.name .. "\n",
+                                COLOR.dL, "You feel like you're going to have a-",
+                            }, 1 }
+                            MSG { msg[1], msg[2], time = .26, last = true, alpha = .75 }
+                            SFX.play('hyperalert')
+                            SaveAchv()
+                        end
                     elseif ACHV.could_you_not then
                         MSG("dark", "COULD YOU NOT?",10)
                     else
