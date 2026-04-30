@@ -1834,25 +1834,13 @@ Fatigue = {
         { time = 430, event = { 'dmgTimerMul', -.05 } },
         { time = 480, event = { 'atkBufferCap', 6, 'animDuration', 1, 'maxQuestSize', 1 }, text = "FAREWELL.",                 desc = "QuestDifficulty++++++",     duration = 26, color = 'lB', },
         { time = 485, event = { 'atkBufferCap', 6, 'animDuration', 3, 'extraQuestVar', 1 } },
-        { time = 490, event = { 'atkBufferCap', 6, 'animDuration', 5 } },
-        { time = 510, event = { 'animDuration', 11 }, --[[26]]                             text = "" },
-        { time = 540, event = { 'animDuration', 16 }, --[[42]]                             text = "" },
-        { time = 570, event = { 'animDuration', 20 }, --[[62]]                             text = "" },
-        { time = 600, event = { 'animDuration', 64 }, --[[126]]                            text = "" },
-        { time = 630, event = { 'extraQuestBase', .01 }, text = "YOU FEEL THE IMPENDING DOOM_",                 desc = "30 Seconds Remain",     duration = 12, color = 'lB', },
-        { time = 645, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "15 Seconds Remain",     duration = 4, color = 'lB', },
-        { time = 650, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "10 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 651, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "9 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 652, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "8 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 653, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "7 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 654, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "6 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 655, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "5 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 656, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "4 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 657, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "3 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 658, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "2 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 659, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "1 Second Remains",     duration = 0.5, color = 'lB', },
-        { time = 660, event = { 'dmgTimerMul', -0.499 }, text = "MWAHAHAHA!",                 desc = "CEASE!",     duration = 26, color = 'lR', },
-        { time = 1e99 }, -- Total: dmgTimerMul-50%, Cycle-1, Wrong+2
+        { time = 490, event = { 'atkBufferCap', 6, 'animDuration', 4 } },
+        { time = 500, event = { 'animDuration', 5 }, --[[21]] },
+        { time = 510, event = { 'animDuration', 5 }, --[[26]]                              text = "" },
+        { time = 520, event = { 'animDuration', 10, 'lifeLeak', .2 }, --[[36]]             text = "ANGINA.",                   desc = "HP leak",                   color = 'DR' },
+        { time = 540, event = { 'animDuration', 12 }, --[[48]] },
+        { time = 560, event = { 'animDuration', 14 }, --[[62]]                             text = "" },
+        { time = 1e99 }, -- Total: dmgTimerMul-50%, Cycle-1, Wrong+2, killscreen at 520+100(200)s
     },
     rEX = {
         { time = 90,  event = { 'extraQuestBase', .2, 'animDuration', .5 } },
@@ -1871,21 +1859,8 @@ Fatigue = {
         { time = 426, event = { 'dmgTimerMul', -.05 } },
         { time = 430, event = { 'dmgTimerMul', -.05 } },
         { time = 435, event = { 'dmgTimerMul', -.03 } },
-        { time = 440, event = { 'dmgTimerMul', -.02 } },
-        { time = 570, event = { 'extraQuestBase', .01 }, text = "YOU FEEL THE IMPENDING DOOM_",                 desc = "30 Seconds Remain",     duration = 12, color = 'lB', },
-        { time = 585, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "15 Seconds Remain",     duration = 4, color = 'lB', },
-        { time = 590, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "10 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 591, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "9 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 592, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "8 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 593, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "7 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 594, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "6 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 595, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "5 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 596, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "4 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 597, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "3 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 598, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "2 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 599, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "1 Second Remains",     duration = 0.5, color = 'lB', },
-        { time = 600, event = { 'dmgTimerMul', -0.099 }, text = "MWAHAHAHA!",                 desc = "CEASE!",     duration = 26, color = 'lR', },
-        { time = 1e99 }, -- Total: dmgTimerMul-90%, Cycle-1.5, Wrong+5
+        { time = 440, event = { 'dmgTimerMul', -.02, 'lifeLeak', .5 },                  text = "BLACK OUT.",                      desc = "HP leak",                color = 'DR' },
+        { time = 1e99 }, -- Total: dmgTimerMul-90%, Cycle-1.5, Wrong+5, killscreen at 440+40(60)s
     },
     -- Trevor Smithy
     eEX = {
@@ -1955,20 +1930,8 @@ Fatigue = {
         { time = 416, event = { 'dmgTimerMul', -.05 } },
         { time = 420, event = { 'dmgTimerMul', -.03 } },
         { time = 425, event = { 'dmgTimerMul', -.02 } },
-        { time = 570, event = { 'extraQuestBase', .01 }, text = "YOU FEEL THE IMPENDING DOOM_",                 desc = "30 Seconds Remain",     duration = 12, color = 'lB', },
-        { time = 585, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "15 Seconds Remain",     duration = 4, color = 'lB', },
-        { time = 590, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "10 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 591, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "9 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 592, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "8 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 593, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "7 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 594, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "6 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 595, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "5 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 596, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "4 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 597, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "3 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 598, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "2 Seconds Remain",     duration = 0.5, color = 'lB', },
-        { time = 599, event = { 'extraQuestBase', .01 }, text = "DIE!",                 desc = "1 Second Remains",     duration = 0.5, color = 'lB', },
-        { time = 600, event = { 'dmgTimerMul', -0.299 }, text = "MWAHAHAHA!",                 desc = "CEASE!",     duration = 26, color = 'lR', },
-        { time = 1e99 }, -- Total: dmgTimerMul-70%
+        { time = 476, event = { 'lifeLeak', .2 },                                text = "CARDIAC RUPTURE.",                           desc = "HP leak",        color = 'DR' },
+        { time = 1e99 }, -- Total: dmgTimerMul-50%, killscreen at 476+150s
     },
 }
 -- My formatter doesn't work if there's "…" inside
@@ -2250,3 +2213,20 @@ DevScore.tower_regular = 2e4
 DevScore.speed_player = 2600
 DevScore.clock_out = 420
 DevScore.vip_list = 42
+
+LifeLeakMessages = {
+    {time = 30, text = "YOU FEEL THE IMPENDING DOOM", desc = "30 Seconds Remain", duration = 12},
+    {time = 15, text = "DIE!", desc = "15 Seconds Remain", duration = 4},
+    {time = 10, text = "DIE!", desc = "10 Seconds Remain", duration = 0.5},
+    {time = 9,  text = "DIE!", desc = "9 Seconds Remain",  duration = 0.5},
+    {time = 8,  text = "DIE!", desc = "8 Seconds Remain",  duration = 0.5},
+    {time = 7,  text = "DIE!", desc = "7 Seconds Remain",  duration = 0.5},
+    {time = 6,  text = "DIE!", desc = "6 Seconds Remain",  duration = 0.5},
+    {time = 5,  text = "DIE!", desc = "5 Seconds Remain",  duration = 0.5},
+    {time = 4,  text = "DIE!", desc = "4 Seconds Remain",  duration = 0.5},
+    {time = 3,  text = "DIE!", desc = "3 Seconds Remain",  duration = 0.5},
+    {time = 2,  text = "DIE!", desc = "2 Seconds Remain",  duration = 0.5},
+    {time = 1,  text = "DIE!", desc = "1 Seconds Remain",  duration = 0.5},
+    {time = 0.1,  text = "MWAHAHAHA!", desc = "CEASE!",  duration = 26, color = 'lR'},
+    {time = -1},
+}
