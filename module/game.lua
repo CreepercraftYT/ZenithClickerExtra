@@ -1012,7 +1012,10 @@ function GAME.genQuest()
         if #combo >= 4 then
             local pwr = #combo * 2 - 7
             if TABLE.find(combo, 'DH') then pwr = pwr + 1 end
-            SFX.play('garbagewindup_' .. MATH.clamp(pwr, 1, 5), 1, 0)
+            if #combo >= 7 then
+                pwr = #combo
+            end
+            SFX.play('garbagewindup_' .. MATH.clamp(pwr, 1, 9), 1, 0)
             GAME.showWindup(pwr)
         end
 
@@ -1034,6 +1037,13 @@ function GAME.genQuest()
     for _, C in ipairs(CD) do C.touchCount, C.required, C.required2 = 0, false, false end
     for _, v in next, GAME.quests[1].combo do CD[v].required = true end
     if M.DP ~= 0 and GAME.quests[2] then for _, v in next, GAME.quests[2].combo do CD[v].required2 = true end end
+end
+local windupTest = 0
+function GAME.testWindup()
+    windupTest = windupTest + 1
+    if windupTest > 9 then windupTest = 1 end
+    SFX.play('garbagewindup_' .. windupTest, 1, 0)
+    GAME.showWindup(windupTest)
 end
 
 function GAME.startRevive()
@@ -2437,7 +2447,8 @@ function GAME.task_toggleEasy()
     GAME.rollCheck = GAME.spinCheck --if last was spin, then set roll, otherwise no
     local mnh = 0 -- mod no hold
     if M.NH == -1 then mnh = 1.5 else mnh = M.NH end --if easy, don't be negative because then negative interval
-    local interval = .042 * (M.AS == 2 and .62 or 1) * (1 + 2 * mnh) * ((GAME.slowmo or GAME.eslowmo) and 2.6 or 1) * ((GAME.nightcore or GAME.enightcore) and 1 / 2.6 or 1)
+    local pitch = M.GV < 0 and 2^(-1/2) or M.GV > 0 and 2 ^ ((URM and M.GV == 2 and 3 or M.GV) / 12) or 1
+    local interval = 0.2 / pitch
     for i = 1, #list do
         if needFlip[i] then
             GAME.anyChange = true

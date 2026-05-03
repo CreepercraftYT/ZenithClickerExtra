@@ -573,6 +573,8 @@ do
     local w = 13
     local d1 = 20
     local d2 = 16
+    local d3 = 30
+    local d4 = 15
     TEXTURE.windupText = {
         GC.initCanvas(128, 128, function()
             GC.clear(1, 1, 1, 0)
@@ -592,14 +594,19 @@ do
         GC.initCanvas(128, 128, function()
             local w = w - 2
             GC.clear(1, 1, 1, 0)
-            FONT.set(70, '_mono')
-            GC.rectangle('fill', 64 - w / 2 - 19, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - 19, 64 + 31, w, -w)
-            GC.print("?", 53, 5, 0, 1.1, 1.26) -- Not very fitting, but this is not used
+            GC.rectangle('fill', 64 - w / 2 - d1 - 1, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - d1 - 1, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 - d4 / 2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - d4 / 2, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 + d4 / 2, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + d4 / 2, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 + d1 + 1, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + d1 + 1, 64 + 31, w, -w)
         end),
         GC.initCanvas(128, 128, function()
+            w = 12
             GC.clear(1, 1, 1, 0)
-            FONT.set(70, '_mono')
-            GC.print("?", 39, 6, 0, 1.26) -- Not very fitting, but this is not used
+            GC.rectangle('fill', 64 - w / 2 - d3, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - d3, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 - d4, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 - d4, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 + 00, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + 00, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 + d4, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + d4, 64 + 31, w, -w)
+            GC.rectangle('fill', 64 - w / 2 + d3, 64 - 31, w, 62 - w * 1.6); GC.rectangle('fill', 64 - w / 2 + d3, 64 + 31, w, -w)
         end),
     }
 end

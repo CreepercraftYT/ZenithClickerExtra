@@ -244,11 +244,18 @@ local function keyTrigger(key)
             W._hoverTime = W._hoverTimeMax
         elseif key == 'f14' then
             if URM and M.VL == 2 and not UltraVlCheck('easy') then return end
+            if love.keyboard.isDown('w') then 
+                GAME.testWindup() 
+                return
+            end
             GAME.anyChange = false
             GAME.toggleEasy()
             if GAME.anyChange then
                 if not GAME.playing then
-                    SFX.play('allclear')
+                    local hand = GAME.getHand(true)
+                    local revCount = table.concat(hand):count('r')
+                    SFX.play('garbagewindup_' .. #hand-revCount, 1, 0, Tone(0))
+                    --SFX.play('allclear')
                 else
                     SFX.play('staffwarning')
                     if M.DP ~= 0 then
@@ -1921,6 +1928,7 @@ function scene.overDraw()
         local r = MATH.between(w.time, 1, w.totalTime - .5) and 42 * (.5 - w.time % .5) ^ 4.2 or 0
         windupColor[w.lv][4] = w.alpha
         gc_setColor(windupColor[w.lv])
+        if w.lv == 9 then gc_setColor(COLOR.rainbow_light(2 * t)) end
         gc_mDraw(TEXTURE.windup, w.x, w.y, r, k)
         gc_setColor(1, 1, 1, r / (42 * .5 ^ 4.2))
         gc_mDraw(TEXTURE.windup, w.x, w.y, r, k)
