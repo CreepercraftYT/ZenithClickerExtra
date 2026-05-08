@@ -150,6 +150,7 @@ local ins, rem = table.insert, table.remove
 ---@field achv_cleanBreakQuest number
 ---@field achv_professionalCleanerQuest number
 ---@field achv_roldSmythyQuest number
+---@field comboSFX number
 ---@field multiplePiecesActive boolean True if multiple pieces are active together. If so, disables achievements and record submission viability
 ---@field badTime boolean? True if ZCEM basement is active
 ---@field badTimeStarted boolean? True if ZCEM basement run has started
@@ -203,6 +204,9 @@ local GAME = {
     numberRev = false,
 
     quests = {},
+    -- Trevor Smithy
+    questStack = {},
+    --
     reviveTasks = {},
     currentTask = false,
     lastFlip = false,
@@ -281,6 +285,7 @@ GAME.rank = 1
 GAME.xp = 0
 GAME.height = 0
 GAME.chain = 0
+GAME.comboSFX = 0
 
 local M = GAME.mod
 local MD = ModData
@@ -962,10 +967,21 @@ function GAME.genQuest()
                 end
             end
         end
+
+        if #GAME.questStack then
+            for i = 1, #GAME.questStack do
+                for j = 1, #GAME.questStack[i].combo do
+                    pool[GAME.questStack[i].combo[j]] = pool[GAME.questStack[i].combo[j]] - 0.9*pool[GAME.questStack[i].combo[j]]
+                end
+            end
+        end
         local questCount = MATH.clamp(MATH.roundRnd(r), 1, GAME.maxQuestSize)
         if questCount == 1 and M.DP ~= -1 then
             -- Prevent 1-mod quest being DP
             pool.DP = 0
+            if #GAME.questStack then
+                pool.DP = 0.1
+            end
         elseif M.DH == 2 then
             -- Reduce DP on rDH
             pool.DP = pool.DP * .5
@@ -1036,7 +1052,11 @@ function GAME.genQuest()
     GAME.gravTimer = false
     GAME.achv_resetCount = 0
     for _, C in ipairs(CD) do C.touchCount, C.required, C.required2 = 0, false, false end
-    for _, v in next, GAME.quests[1].combo do CD[v].required = true end
+    if STAT.stacker and GAME.questStack[1] then
+        for _, v in next, GAME.questStack[1].combo do CD[v].required = true end
+    else
+        for _, v in next, GAME.quests[1].combo do CD[v].required = true end
+    end
     if M.DP ~= 0 and GAME.quests[2] then for _, v in next, GAME.quests[2].combo do CD[v].required2 = true end end
 end
 local windupTest = 0
@@ -1489,7 +1509,7 @@ function GAME.showWindup(lv)
     local attempt = 0
     local x, y
     while true do
-        x, y = (62 + 26 * attempt) * MATH.rand(-1, 1), MATH.rand(-20, 20)
+        x, y = (62 + 26 * attempt) * MATH.rand(-1, 1), MATH.rand(-20, 20) - (STAT.stacker and GAME.questStack[1] and 70 or 0)
         for i = 1, #GAME.windupAnim do
             local w = GAME.windupAnim[i]
             if MATH.distance(x, y, w.x, w.y) < 62 then
@@ -2338,7 +2358,7 @@ function GAME.refreshLifeState()
     if hp == GAME.fullHealth then
         newState = 'safe'
     else
-        local dangerDmg = max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime)
+        local dangerDmg = max(GAME.dmgWrong + GAME.dmgWrongExtra, GAME.dmgTime, STAT.stacker and GAME.dmgWrong * (#GAME.questStack-25)/10 or 0)
         newState = hp <= dangerDmg and 'danger' or 'safe'
     end
     if oldState ~= newState then
@@ -2529,10 +2549,14 @@ function GAME.commit(auto, falseCommit)
                 end
             end
         end
+    end
+    for _, id in next, GAME.lastCommit do CD[id].inLastCommit = false end
+    GAME.lastCommit = TABLE.copy(hand)
+    for _, id in next, GAME.lastCommit do CD[id].inLastCommit = true end
 
-        for _, id in next, GAME.lastCommit do CD[id].inLastCommit = false end
-        GAME.lastCommit = TABLE.copy(hand)
-        for _, id in next, GAME.lastCommit do CD[id].inLastCommit = true end
+    local stackQuest 
+    if GAME.questStack[1] then
+        stackQuest = TABLE.sort(GAME.questStack[1].combo)
     end
     local q1 = TABLE.sort(GAME.quests[1].combo)
     local q2 = M.DP ~= 0 and GAME.quests[2] and TABLE.sort(GAME.quests[2].combo)
@@ -2584,17 +2608,33 @@ function GAME.commit(auto, falseCommit)
         end
     end
 
-    local correct, dblCorrect, eDPCorrect
-    if TABLE.equal(hand, q1) and not falseCommit then
-        correct = 1
-        dblCorrect = q2 and TABLE.equal(hand, q2)
-        eDPCorrect = q3 and TABLE.equal(hand, q3)
-    elseif q2 and TABLE.equal(hand, q2) and not falseCommit then
-        correct = 2
-        GAME.incrementPrompt('pass_second')
-    elseif q3 and TABLE.equal(hand, q3) and not falseCommit then
-        correct = 3
-        eDPCorrect = 1
+    local correct, dblCorrect, eDPCorrect, stackCorrect
+    if not stackQuest then
+        if TABLE.equal(hand, q1) and not falseCommit then
+            correct = 1
+            dblCorrect = q2 and TABLE.equal(hand, q2)
+            eDPCorrect = q3 and TABLE.equal(hand, q3)
+        elseif q2 and TABLE.equal(hand, q2) and not falseCommit then
+            correct = 2
+            GAME.incrementPrompt('pass_second')
+        elseif q3 and TABLE.equal(hand, q3) and not falseCommit then
+            correct = 3
+            eDPCorrect = 1
+        end
+    else
+        if TABLE.equal(hand, q1) and not falseCommit then
+            correct = 1
+            dblCorrect = q2 and TABLE.equal(hand, q2)
+            eDPCorrect = q3 and TABLE.equal(hand, q3)
+        elseif q2 and TABLE.equal(hand, q2) and not falseCommit and not TABLE.equal(hand, stackQuest) then
+            correct = 2
+            GAME.incrementPrompt('pass_second')
+        elseif q3 and TABLE.equal(hand, q3) and not falseCommit and not TABLE.equal(hand, stackQuest) then
+            correct = 3
+            eDPCorrect = 1
+        elseif TABLE.equal(hand, stackQuest) and not falseCommit then
+            stackCorrect = 1
+        end
     end
     if eDPCorrect then
         GAME.incrementPrompt('pass_third')
@@ -2623,8 +2663,87 @@ function GAME.commit(auto, falseCommit)
         end
     end
 
-    if correct or falseCommit then
+    if stackCorrect and not falseCommit then -- if stackerMode then
+        GAME.comboSFX = GAME.comboSFX + 1
+        if GAME.comboSFX > 16 then GAME.comboSFX = 16 end
+        if GAME.spikeCounter < 10 then
+            SFX.play('combo_' .. GAME.comboSFX)
+        else
+            SFX.play('combo_' .. GAME.comboSFX .. '_power')
+        end
+        local attack, xp
+        if GAME.comboSFX == 16 then
+            attack = 3
+            xp = 3
+            GAME.heal(GAME.dmgHeal)
+            GAME.dmgTimer = GAME.dmgTimer + 3 / 5 * #hand
+        elseif GAME.comboSFX > 5 then
+            attack = 2
+            xp = 2
+            GAME.heal(GAME.dmgHeal * 2/3)
+            GAME.dmgTimer = GAME.dmgTimer + 2 / 5 * #hand
+        elseif GAME.comboSFX > 1 then
+            attack = 1
+            xp = 1
+            GAME.heal(GAME.dmgHeal * 1/3)
+            GAME.dmgTimer = GAME.dmgTimer + 1 / 5 * #hand
+        else
+            attack = 0
+            xp = 0
+        end
+        if GAME.dmgTimer > GAME.dmgDelay then GAME.dmgTimer = GAME.dmgDelay end
+        -- Spike
+        if GAME.spikeTimer <= 0 then
+            GAME.spikeTimer = 0
+            GAME.spikeCounter = 0
+            GAME.spikeCounterWeak = 0
+        end
+        GAME.spikeTimer = MATH.clamp(
+            GAME.spikeTimer + (attack) / (12.6 + GAME.spikeCounter / 26),
+            GAME.spikeCounter < 8 and 1.26 or .8,
+            6.2
+        )
+        attack = MATH.roundRnd(attack)
+
+        GAME.spikeCounter = GAME.spikeCounter + attack
+        GAME.maxSpike = max(GAME.maxSpike, GAME.spikeCounter)
+        GAME.spikeCounterWeak = GAME.spikeCounterWeak + attack
+        GAME.maxSpikeWeak = max(GAME.maxSpikeWeak, GAME.spikeCounterWeak)
+        if GAME.spikeCounter >= 8 then TEXTS.spike:set(tostring(GAME.spikeCounter)) end
+
+        GAME.incrementPrompt('send', attack)
+        GAME.totalAttack = GAME.totalAttack + attack
+
+        if attack > 0 then GAME.addHeight(attack * GAME.attackMul) end
+        GAME.addXP(attack + xp)
+        rem(GAME.questStack, 1)
+        GAME.cancelAll(true)
+        GAME.cancelBurn()
+        GAME.fault = true
+        GAME.questTime = 0
+        GAME.gravTimer = GAME.gravDelay
+        for _, C in ipairs(CD) do C.touchCount, C.required, C.required2 = 0, false, false end
+        if STAT.stacker and GAME.questStack[1] then
+            for _, v in next, GAME.questStack[1].combo do CD[v].required = true end
+        else
+            for _, v in next, GAME.quests[1].combo do CD[v].required = true end
+        end
+        if M.DP ~= 0 and GAME.quests[2] then for _, v in next, GAME.quests[2].combo do CD[v].required2 = true end end
+    elseif correct or falseCommit then
         --Trevor Smithy
+        if GAME.comboSFX > 3 then
+            SFX.play('combobreak')
+        end
+        local comboAttackMul = 1
+        local comboXPMul = 1
+        if GAME.comboSFX > 0 then
+            comboAttackMul = GAME.comboSFX/16 * 40 --40x height gain
+            comboXPMul = GAME.comboSFX/16 * 10 --10x XP gain
+        end
+        if #GAME.questStack > 16 and GAME.comboSFX == 0 then
+            comboXPMul = max(0, 1 - (#GAME.questStack - 16)/4) -- anything beyond a 20 stack has no XP gain
+        end
+        GAME.comboSFX = 0
         local totalAssistPenalty = 0
         for i = 1, #CD do
             if CD[i].active then
@@ -2942,7 +3061,7 @@ function GAME.commit(auto, falseCommit)
                 attack = attack/((5/4)^((totalAssistPenalty-2)^1.6351896075))
             end 
         end
-        local roundedAttack = MATH.roundRnd(attack)
+        local roundedAttack = MATH.roundRnd(attack * GAME.attackMul * comboAttackMul / (1 + (#GAME.questStack)/4) / (GAME.badTime and 3 or 1))
         if not falseCommit then
             GAME.spikeCounter = GAME.spikeCounter + roundedAttack + surge
             GAME.maxSpike = max(GAME.maxSpike, GAME.spikeCounter)
@@ -2997,9 +3116,9 @@ function GAME.commit(auto, falseCommit)
         end
 
         if GAME.DPlock then attack = min(attack, URM and oldAllyLife * 2.6 or oldAllyLife * 4) end
-        if attack > 0 and not falseCommit then GAME.addHeight(attack * GAME.attackMul / (GAME.badTime and 3 or 1)) end
+        if attack > 0 and not falseCommit then GAME.addHeight(attack * GAME.attackMul * comboAttackMul / (1 + (#GAME.questStack)/4) / (GAME.badTime and 3 or 1)) end
         if not falseCommit then
-            GAME.addXP(attack + xp)
+            GAME.addXP((attack + xp) * comboXPMul)
         else
             return attack + xp
         end
@@ -3117,6 +3236,10 @@ function GAME.commit(auto, falseCommit)
 
         if M.MS == 1 and GAME.floor >= 10 and GAME.totalQuest % 40 == 0 then GAME.readyShuffle(4) end
     else
+        if GAME.comboSFX > 3 then
+            SFX.play('combobreak')
+        end
+        GAME.comboSFX = 0
         if GAME.currentTask then
             if #hand >= 7 and not TABLE.find(hand, 'DP') then
                 GAME.incrementPrompt(#hand == 8 and 'commit_swamp' or 'commit_swamp_l')
@@ -3129,6 +3252,17 @@ function GAME.commit(auto, falseCommit)
             then
                 GAME.incrementPrompt('commit_reversed')
             end
+        end
+        -- Stacker Mode - push to stack
+        if #hand == 0 and STAT.stacker and not auto then
+            ins(GAME.questStack, 1, {combo = GAME.quests[1].combo, name = GC.newText(FONT.get(70), GAME.getComboName(TABLE.copy(GAME.quests[1].combo), 'ingame')), y = 330, k = 1, a = 1,})
+            rem(GAME.quests, 1)
+            GAME.genQuest()
+            SFX.play("hold")
+            if #GAME.questStack > 26 then
+                GAME.takeDamage(GAME.dmgWrong * (#GAME.questStack-26)/10)
+            end
+            return
         end
 
         GAME.fault = true
@@ -3217,6 +3351,10 @@ function GAME.start()
     if GAME.badTime then
         GAME.badTimeStarted = true
         GAME.fallout = false
+    end
+    if STAT.stacker then
+        SCN.scenes.tower.widgetList.start.text = ''
+        SCN.scenes.tower.widgetList.start:reset()
     end
     GAME.lifeLeakMessage = 1
 
@@ -3387,6 +3525,7 @@ function GAME.start()
     GAME.upFloor()
 
     TABLE.clear(GAME.quests)
+    TABLE.clear(GAME.questStack)
     GAME.genQuest()
 
     TASK.removeTask_code(task_startSpin)
@@ -3460,6 +3599,12 @@ function GAME.finish(reason)
     end
     FloatOnCard = nil
     GAME.refreshLayout()
+
+    if STAT.stacker then
+        local W = SCN.scenes.tower.widgetList.start
+        W.text = M.DH ~= 0 and "COMMENCE" or "START"
+        W:reset()
+    end
 
     if GAME.smithyMode and (GAME.teramusic or GAME.teraLostHeight or GAME.teraComplete) then
         local smithyModeHeight = GAME.roundHeight
@@ -3728,6 +3873,9 @@ function GAME.finish(reason)
         local resStr = {}
         --for i = 1, 7 do
         -- Trevor Smithy
+        if STAT.stacker then
+            TABLE.append(resStr, {COLOR.dI, "S"})
+        end
         if (M.EX == -1 and GAME.comboStr:count('r') == 0 and URM) or GAME.badTime then
             TABLE.append(resStr, {COLOR.DR, "U"})
         end
@@ -4491,8 +4639,9 @@ function GAME.update(dt,realDT)
 
     --Trevor Smithy
     local q1 = TABLE.sort(GAME.quests[1].combo)
+    local stackQuest = GAME.questStack[1] and TABLE.sort(GAME.questStack[1].combo)
     local hand = TABLE.sort(GAME.getHand(false))
-    if M.GV == -1 and TABLE.equal(hand, q1) then
+    if M.GV == -1 and (TABLE.equal(hand, q1) or (stackQuest and TABLE.equal(hand, stackQuest))) then
         GAME.commit(true)
     end
 
