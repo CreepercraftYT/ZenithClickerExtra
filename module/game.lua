@@ -2014,6 +2014,8 @@ function GAME.refreshCurrentCombo()
             GAME.customUltraCombo = false
         elseif comboName == 'EASY VISIBLE TIDY ASCENDANT DAMNED LIFT' then
             comboName = '"BLASPHEMOUS ASCENSION"'
+            GAME.forceRev = GAME.pieceCount() < 2
+            RefreshBGM()
             GAME.customUltraCombo = true
         elseif comboName == 'EASY BELIEVED DECEPTIVE MODERATE FRIENDLY SPIN' then
             comboName = '"PARADOXICAL ENTROPY"'
@@ -2027,6 +2029,8 @@ function GAME.refreshCurrentCombo()
             GAME.customUltraCombo = true
         elseif comboName == 'EASY TIDY DESPERATE SAVED LIFTED HEARTACHE' then
             comboName = '"SEVERED VOLITION"'
+            GAME.forceRev = GAME.pieceCount() < 2
+            RefreshBGM()
             GAME.customUltraCombo = true
         else
             GAME.customUltraCombo = false
