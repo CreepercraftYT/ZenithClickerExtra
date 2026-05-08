@@ -949,7 +949,7 @@ function GAME.genQuest()
             if #combo >= 7 then
                 pwr = #combo
             end
-            local tone = GAME.nightcore and 12 or 0
+            local tone = GAME.nightcore and 16.54 or 0
             if GAME.slowmo then tone = tone - 12 end
             for i = 1, tone == 0 and 1 or 2 do
                 SFX.play('garbagewindup_' .. MATH.clamp(pwr, 1, 9), 1 / i, 0, tone)
@@ -985,7 +985,9 @@ local windupTest = 0
 function GAME.testWindup()
     windupTest = windupTest + 1
     if windupTest > 9 then windupTest = 1 end
-    SFX.play('garbagewindup_' .. windupTest, 1, 0)
+    local tone = GAME.nightcore and 16.54 or 0
+    if GAME.slowmo then tone = tone - 12 end
+    SFX.play('garbagewindup_' .. windupTest, 1, 0, tone)
     if windupTest == 9 and not ACHV.the_windup then 
         TASK.new(function()
             TASK.yieldT(2.6)
