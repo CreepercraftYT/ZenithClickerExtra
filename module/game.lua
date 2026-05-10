@@ -3204,8 +3204,8 @@ function GAME.commit(auto, falseCommit)
             rem(GAME.quests, 1)
             GAME.genQuest()
             SFX.play("hold")
-            if #GAME.questStack > 26 then
-                GAME.takeDamage(GAME.dmgWrong * (#GAME.questStack-26)/10)
+            if #GAME.questStack > 20 then
+                GAME.takeDamage((M.MS == -1 and (GAME.dmgWrong + 1)/2 or GAME.dmgWrong) * (#GAME.questStack-20)/(M.MS == -1 and 20 or 10))
             end
             return
         end
@@ -3620,9 +3620,10 @@ function GAME.finish(reason)
     end
     GAME.currentTask = false
 
-    if GAME.totalQuest > 2.6 then
+    if GAME.totalQuest > 2.6 or GAME.gigaspeedEntered then
         LOG('info', ("[%s] (%s) F%d %.1fm in %.3fs"):format(reason, table.concat(GAME.getHand(true), ', '), GAME.floor, GAME.roundHeight, GAME.time))
 
+        if GAME.totalQuest <= 2.6 and not ACHV.gigaplonk then IssueAchv('gigaplonk') end
         if GAME.floor >= 10 then
             local unlockRev = 0
             for k, v in next, M do
