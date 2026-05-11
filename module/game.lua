@@ -3473,6 +3473,7 @@ function GAME.start()
 
     TABLE.clear(GAME.quests)
     TABLE.clear(GAME.questStack)
+    GAME.comboSFX = 0
     GAME.genQuest()
 
     TASK.removeTask_code(task_startSpin)
@@ -3508,7 +3509,7 @@ function GAME.start()
     GAME.achv_level19capH = nil
     GAME.achv_totalResetCount = 0
     GAME.achv_altFromSurge = 0
-    if M.DP > 0 then IssueAchv('intended_glitch') end
+    if M.DP ~= 0 then IssueAchv('intended_glitch') end
 end
 
 ---@param reason 'forfeit' | 'wrong' | 'time'
