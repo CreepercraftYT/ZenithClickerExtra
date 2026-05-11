@@ -158,9 +158,7 @@ function Card:setActive(auto, key)
         end
         local leftCard
         local rightCard
-        local mvl
-        if M.VL == -1 then mvl = 1 else mvl = M.VL end
-        local maxCardDistance = 1 + (M.EX == 2 and URM and 2 or M.EX == 2 and 1 or M.EX == 1 and 1 or 0) - mvl + (GAME.closeCard and 1 or 0)
+        local maxCardDistance = 1 + max((M.EX == 2 and URM and 2 or M.EX == 2 and 1 or M.EX == 1 and 1 or 0) - abs(M.VL) + (GAME.closeCard and 1 or 0),0)
         local otherCardActivated = false
         for i = 1, maxCardDistance do
             if self.tempOrder > i then leftCard = CD[self.tempOrder - i] end
