@@ -1019,6 +1019,11 @@ local function stackerStartButtonColor()
         W.color[2] = 0.05
         W.color[3] = 0.35
     end
+    if #GAME.questStack >= 20 then
+        W.color[1] = 1
+        W.color[2] = 0
+        W.color[3] = 0
+    end
     W:reset()
 end
 
@@ -1188,6 +1193,7 @@ function scene.draw()
             gc_setAlpha(.42 + .1 * sin(t * 6.2))
             gc_mRect('fill', -200, 126, 200, 80, 40)
         end
+        TABLE.clear(GAME.questStack)
     end
 
     if STAT.stacker then stackerStartButtonColor() end

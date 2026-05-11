@@ -888,16 +888,25 @@ function GAME.genQuest()
         if #GAME.questStack then
             for i = 1, #GAME.questStack do
                 for j = 1, #GAME.questStack[i].combo do
-                    pool[GAME.questStack[i].combo[j]] = pool[GAME.questStack[i].combo[j]] - 0.9*pool[GAME.questStack[i].combo[j]]
+                    pool[GAME.questStack[i].combo[j]] = pool[GAME.questStack[i].combo[j]] - 0.8*pool[GAME.questStack[i].combo[j]]
                 end
             end
         end
         local questCount = MATH.clamp(MATH.roundRnd(r), 1, GAME.maxQuestSize)
-        if questCount == 1 and M.DP ~= -1 then
+        if M.DP == -1 then
+            if questCount == 1 then
+                pool.DP = pool.DP * .2
+                if #GAME.questStack then
+                    pool.DP = pool.DP / 1.1 ^ (#GAME.questStack)
+                end
+            end
+        elseif questCount == 1 then
             -- Prevent 1-mod quest being DP
-            pool.DP = 0
             if #GAME.questStack then
-                pool.DP = 0.1
+                pool.DP = pool.DP * .1
+                pool.DP = pool.DP / 1.1 ^ (#GAME.questStack)
+            else
+                pool.DP = 0
             end
         elseif M.DH == 2 then
             -- Reduce DP on rDH
@@ -2674,7 +2683,7 @@ function GAME.commit(auto, falseCommit)
         local comboAttackMul = 1
         local comboXPMul = 1
         if GAME.comboSFX > 0 then
-            comboAttackMul = GAME.comboSFX/16 * 40 --40x height gain
+            comboAttackMul = GAME.comboSFX/16 * 30 --30x height gain
             comboXPMul = GAME.comboSFX/16 * 10 --10x XP gain
         end
         if #GAME.questStack > 16 and GAME.comboSFX == 0 then
@@ -2730,7 +2739,7 @@ function GAME.commit(auto, falseCommit)
                 GAME.bonusRecoveryHealth = GAME.bonusRecoveryHealth - 1
                 GAME.dmgTimerMul = GAME.dmgTimerMul - 1/3
             end
-            GAME.heal(((dblCorrect or (eDPCorrect and correct == 1)) and 3 or 1) * GAME.dmgHeal + GAME.bonusRecoveryHealth)
+            if #GAME.questStack < 20 then GAME.heal(((dblCorrect or (eDPCorrect and correct == 1)) and 3 or 1) * GAME.dmgHeal + GAME.bonusRecoveryHealth) end
             if MATH.between(Floors[GAME.floor].top - (GAME.height + GAME.heightBuffer), 0, GAME.eglassCard and 4 or 2) then GAME.addHeight(GAME.eglassCard and 5 or 3, true) end
         end
 
@@ -3145,10 +3154,10 @@ function GAME.commit(auto, falseCommit)
                 if GAME.comboStr == 'DPMSrNH' then SubmitAchv('scarcity_mindset', GAME.totalFlip) end
             elseif GAME.totalQuest == 41 then
                 if GAME.comboStr == 'EXMS' then SubmitAchv('quest_rationing', GAME.roundHeight) end
-                if GAME.comboStr == 'eEXeMS' and not URM then 
+                if GAME.comboStr == 'eEXeMS' and not URM and not STAT.stacker then 
                     SubmitAchv('quest_feast', GAME.roundHeight)
                 end
-                if GAME.comboStr == 'EXeDHeNH' then
+                if GAME.comboStr == 'EXeDHeNH' and not STAT.stacker then
                     SubmitAchv('emperor_development', GAME.rank == GAME.peakRank and GAME.rank + (GAME.xp/(4*(GAME.rank+1))) or GAME.peakRank) 
                 end
             end
@@ -3204,8 +3213,13 @@ function GAME.commit(auto, falseCommit)
             rem(GAME.quests, 1)
             GAME.genQuest()
             SFX.play("hold")
-            if #GAME.questStack > 20 then
-                GAME.takeDamage((M.MS == -1 and (GAME.dmgWrong + 1)/2 or GAME.dmgWrong) * (#GAME.questStack-20)/(M.MS == -1 and 20 or 10))
+            if #GAME.questStack >= 20 then
+                if #GAME.questStack > 20 then 
+                    GAME.takeDamage((M.MS == -1 and (GAME.dmgWrong + 1)/2 or GAME.dmgWrong) * (#GAME.questStack-20)/(M.MS == -1 and 20 or 10)) 
+                end
+                if TASK.lock('hyperalert', 2) then
+                    SFX.play("hyperalert", 1, 0, Tone(0))
+                end
             end
             return
         end
