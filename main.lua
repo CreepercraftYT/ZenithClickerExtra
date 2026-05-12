@@ -681,6 +681,8 @@ TEXTS = { -- Font size can only be 30 and 50 here !!!
     chain      = GC.newText(FONT.get(50)),
     chain2     = GC.newText(FONT.get(50, 'led')),
     b2b        = GC.newText(FONT.get(30), "B2B x"),
+    comboText  = GC.newText(FONT.get(50), "COMBO"),
+    combo      = GC.newText(FONT.get(50)),
     spike      = GC.newText(FONT.get(50)),
     gigaspeed  = GC.newText(FONT.get(50), {
         COLOR.dR, "G", COLOR.dO, "I", COLOR.dY, "G",

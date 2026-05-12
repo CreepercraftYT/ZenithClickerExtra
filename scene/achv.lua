@@ -414,15 +414,13 @@ function scene.unload()
 end
 
 function scene.mouseMove(_, _, _, dy)
-    local mvl = M.VL == -1 and 1 or M.VL
     if love.mouse.isDown(1, 2) then
-        scroll = MATH.clamp(scroll - dy * (1 + mvl), 0, maxScroll)
+        scroll = MATH.clamp(scroll - dy * (1 + MATH.abs(M.VL)), 0, maxScroll)
     end
 end
 
 function scene.touchMove(_, _, _, dy)
-    local mvl = M.VL == -1 and 1 or M.VL
-    scroll = MATH.clamp(scroll - dy * (1 + mvl), 0, maxScroll)
+    scroll = MATH.clamp(scroll - dy * (1 + MATH.abs(M.VL)), 0, maxScroll)
 end
 
 function scene.keyDown(key, isRep)
@@ -436,8 +434,7 @@ function scene.keyDown(key, isRep)
 end
 
 function scene.wheelMove(_, dy)
-    local mvl = M.VL == -1 and 1 or M.VL
-    scroll = MATH.clamp(scroll - dy * 100 * (1 + mvl), 0, maxScroll)
+    scroll = MATH.clamp(scroll - dy * 100 * (1 + MATH.abs(M.VL)), 0, maxScroll)
 end
 
 function scene.update(dt)

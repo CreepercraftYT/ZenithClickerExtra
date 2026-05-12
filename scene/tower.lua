@@ -1618,7 +1618,21 @@ function scene.overDraw()
                 gc_mDraw(text, 800, Q.y, 0, kx, ky)
             end
         end
-
+        if STAT.stacker and GAME.comboBounceTime > 0 then
+            gc_setColor(1, 1, 1)
+            local alpha = 1
+            local x, y = 215, 315
+            if GAME.comboBounceTime < 3 then
+                alpha = 1/(3/max(GAME.comboBounceTime, 0.01))
+            end
+            if GAME.comboBounceTime > 3.8 then
+                y = y - 10 + (abs(3.9-GAME.comboBounceTime))*100
+            end
+            gc_setAlpha(alpha)
+            TEXTS.combo:setFont(FONT.get(70))
+            gc_draw(TEXTS.comboText, x, y)
+            gc_draw(TEXTS.combo, x - (TEXTS.combo:getWidth() > 50 and 95 or 60), y - 15)
+        end
     end
 
     -- Debug

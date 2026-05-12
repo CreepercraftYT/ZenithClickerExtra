@@ -152,6 +152,7 @@ local ins, rem = table.insert, table.remove
 ---@field achv_professionalCleanerQuest number
 ---@field achv_roldSmythyQuest number
 ---@field comboSFX number
+---@field comboBounceTime number
 ---@field multiplePiecesActive boolean True if multiple pieces are active together. If so, disables achievements and record submission viability
 ---@field badTime boolean? True if ZCEM basement is active
 ---@field badTimeStarted boolean? True if ZCEM basement run has started
@@ -288,6 +289,7 @@ GAME.xp = 0
 GAME.height = 0
 GAME.chain = 0
 GAME.comboSFX = 0
+GAME.comboBounceTime = 0
 
 local M = GAME.mod
 local MD = ModData
@@ -2611,6 +2613,8 @@ function GAME.commit(auto, falseCommit)
     if stackCorrect and not falseCommit then -- if stackerMode then
         GAME.comboSFX = GAME.comboSFX + 1
         if GAME.comboSFX > 16 then GAME.comboSFX = 16 end
+        TEXTS.combo:set(tostring(GAME.comboSFX))
+        GAME.comboBounceTime = 4
         if GAME.spikeCounter < 10 then
             SFX.play('combo_' .. GAME.comboSFX)
         else
@@ -3471,6 +3475,7 @@ function GAME.start()
     TABLE.clear(GAME.quests)
     TABLE.clear(GAME.questStack)
     GAME.comboSFX = 0
+    GAME.comboBounceTime = 0
     GAME.genQuest()
 
     TASK.removeTask_code(task_startSpin)
@@ -4306,6 +4311,12 @@ function GAME.update(dt)
             GAME.dmgHeal = GAME.dmgHeal - 0.05 * dt
         end
     end
+    
+    if GAME.comboBounceTime > 0 then
+        GAME.comboBounceTime = GAME.comboBounceTime - dt
+    else
+        GAME.comboBounceTime = 0
+    end
 
     local uneasyMode = (M.EX == -1 and URM and M.NH < 2 and M.MS < 2 and M.GV < 2 and M.VL < 2 and M.DH < 2 and M.IN < 2 and M.AS < 2 and M.DP < 2)
     if ((GAME.slowmo and GAME.time >= 2.6) or (not GAME.slowmo and GAME.time >= 1)) and not GAME.uneasyModIconSelected then
@@ -4611,7 +4622,7 @@ function GAME.update(dt)
 
     -- Damage
     -- Trevor Smithy
-    local dmgTimerMulMod = (M.GV == -1 and GAME.eslowmo) and 1.5 or (M.GV == -1 or GAME.eslowmo) and 1.25 or 1
+    local dmgTimerMulMod = 1 + (M.GV == -1 and 0.25 or 0) + (GAME.eslowmo and 0.25 or 0)
     GAME.dmgTimer = GAME.dmgTimer - dt / (GAME.dmgTimerMul * dmgTimerMulMod)
     if GAME.dmgTimer <= 0 then
         GAME.dmgTimer = GAME.dmgCycle
