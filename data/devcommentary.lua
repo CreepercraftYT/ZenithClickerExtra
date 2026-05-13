@@ -397,17 +397,27 @@ return {
         Whatever you do, DON'T STOP CLIMBIN' AND CLIMBIN' AND CLIMBIN' AND CLI—   
     ]],
     ['eEX NH MS GV eVL DH IN eAS DP'] = STRING.trimIndent [[
-        The Swamped Smithy, beacause, well, I'm Trevor Smithy and I'm... kinda stressed out sometimes.
-        Mistakes are easy to make and hard to fix, and it's a bit much, ya know?
+        The Swamped Smithy, because, well, I'm Trevor Smithy and I'm... kinda stressed out sometimes.
+        Mistakes are easy to make and hard to fix, and it's a bit much, ya know? Add to that the pressures of work,
+        chores, and taking care of myself, and it can be quite the handful to overcome.
+        Who could've guessed that achieving a balanced lifestyle, and maintaining a healthy routine can be so hard?
     ]],
     ['ueEX NH MS GV eVL DH IN eAS DP'] = STRING.trimIndent [[
-        The Bogged-Down Smithy
+        The Bogged-Down Smithy, because, well, I'm Trevor Smithy and lately I've been feeling a bit stuck.
+        This project has been my driving force, my motivation, and now it's nearly done. What will I do now?
+        I guess I'll have to just keep on going, pulling myself forward. If I wait around too long, I'll never get anything done.
     ]],
     ['eEX rNH rMS rGV eVL rDH rIN eAS rDP'] = STRING.trimIndent [[
-        The Overwhelemed Smithy
+        The Overwhelemed Smithy, because, well, I'm Trevor Smithy and I feel like I get overwhelmed easily.
+        Too many things happening at once, too many conditions to handle, too many things to account for with my plans.
+        Makes it necessary to step back and determine what's truly important, what truly necessitates my attention.
+        Some things have to be discarded in order to clear a path to your goals.
     ]],
     ['eEX uNH uMS uGV eVL uDH uIN eAS uDP'] = STRING.trimIndent [[
-        The Paralyzed Smithy
+        The Paralyzed Smithy, because, well, you know how sometimes you get stuck? Like, not just lost.
+        Truly, genuinely stuck, with no idea of what you want to do next, or no idea of how you'd get to a point where you would.
+        I guess, after all this, I've come to realize that eventually you just have to accept that things won't get done if...
+        well, if you don't do them. And that's okay. Not every project has to finished, not every dream seen through.
     ]],
     --one of mine
     ['eEX uGV eDH eAS'] = STRING.trimIndent [[
