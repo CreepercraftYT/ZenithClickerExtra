@@ -451,6 +451,16 @@ TEXTURE = {
             quetta = aq(0, 0),
             -- Easy Mode - Issued (v1.2) (No CR)
             patience_is_a_virtue = aq(10, 6),
+            multiple_pieces = aq(1,3),
+            hyperplonk = aq(6, 1),
+            gigaplonk = aq(7, 1),
+            the_windup = aq(8, 1),
+            what_have_you_done = aq(14, 8),
+            music_man = aq(15, 8),
+            im_gonna_be = aq(6, 7),
+            lazy_bastard = aq(16, 8),
+            easy_name = aq(16, 1),
+            biased = aq(4, 5),
         },
         frame = {
             [0] = assets 'achievements/frames/none.png',
