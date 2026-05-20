@@ -3303,6 +3303,8 @@ function GAME.start()
     GAME.noMouseOrSpin = true
     GAME.noKeyboardOrReset = true
     GAME.setupCheck = false
+    GAME.alleyoopCheck = false
+    GAME.slamDunkCheck = false
     GAME.dunk = false
     GAME.bigDunk = false
     GAME.uneasyModIconSelected = false
