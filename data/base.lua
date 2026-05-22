@@ -24,9 +24,9 @@ RonnaReq = { [0] = 19, 26, 26, 27, 27, 28, 28, 29, 29, 30 }
 QuettaReq = { [0] = 21, 29, 29, 30, 30, 31, 31, 32, 32, 33 }
 
 GravityTimer = {
+    [-1] = { 10.0, 9.0, 8.5, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0 },
     { 9.0, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0, 4.5, 4.0 },
     { 3.2, 3.0, 2.8, 2.6, 2.5, 2.4, 2.3, 2.2, 2.1, 2.0 },
-    { 10.0, 9.0, 8.5, 8.0, 7.5, 7.0, 6.5, 6.0, 5.5, 5.0 },
 }
 
 PieceData = {
@@ -76,7 +76,7 @@ Floors = {
     { top = 1100, event = { 'dmgDelay', -1, 'dmgCycle', -.5 },                 name = "The Laboratory",      MSshuffle = 3 },
     { top = 1350, event = { 'dmgDelay', -1, 'dmgCycle', -.5 },                 name = "The Core" },
     { top = 1650, event = { 'dmgDelay', -.5, 'dmgWrong', 1 },                  name = "Corruption",          MSshuffle = 4 },
-    { top = 1e99, event = { 'dmgDelay', -.5, 'dmgCycle', -.5, 'dmgTime', 1 },  name = "Platform of the Gods" },
+    { top = 1e99, event = { 'dmgDelay', -.5, 'dmgCycle', -.5, 'dmgTime', 1 },  name = "Platform of the Gods", eMSshuffle = 1 },
     { top = 1e99, name = "Stellar Nebula Frontier" }, -- Only name is used
     -- Initial: Delay=15. Cycle=5, Wrong=1
     -- Total: Delay-10, Cycle-3, Wrong+4

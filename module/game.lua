@@ -861,7 +861,10 @@ function GAME.genQuest()
     repeat
         local combo = {}
         local base = .72 + floor ^ .5 / 6 + GAME.extraQuestBase + icLerp(6200, 10000, GAME.height)
-        local var = floor * .26 * GAME.extraQuestVar
+        if #GAME.questStack > 16 then base = base + (#GAME.questStack - 16)/5 end
+        local extraQuestVar = GAME.extraQuestVar
+        if #GAME.questStack > 16 then extraQuestVar = extraQuestVar + (#GAME.questStack - 16)/5 end
+        local var = floor * .26 * extraQuestVar
         local r = MATH.clamp(base + var * abs(MATH.randNorm()), 1, GAME.maxQuestSize)
 
     GAME.atkBuffer = GAME.atkBuffer + r
@@ -1528,8 +1531,7 @@ function GAME.upFloor()
             - GAME.floor * 3
         )
         -- Trevor Smithy
-    if M.GV == -1 then GAME.gravDelay = GravityTimer[3][GAME.floor] end
-    if GAME.comboStr == 'eASeDHeEXrGV' and URM and GAME.enightcore and GAME.floor >= 10 or GAME.teramusic then
+    if GAME.comboStr == 'eASeDHeEXrGV' and URM and GAME.enightcore and GAME.teramusic then
         if GAME.floor >= 10 then
             local timeMod = GAME.nightcore and 0.5 or GAME.slowmo and 2 or 1
             if GAME.eslowmo then timeMod = timeMod * 1.4142 end
@@ -1537,7 +1539,7 @@ function GAME.upFloor()
             GAME.gravTimer = GAME.gravDelay - 0.01
         end
     else
-        if M.GV > 0 then GAME.gravDelay = GravityTimer[M.GV][GAME.floor] end
+        if M.GV ~= 0 then GAME.gravDelay = GravityTimer[M.GV][GAME.floor] end
     end
     local F = Floors[GAME.floor]
     local e = F.event
@@ -1745,8 +1747,7 @@ function GAME.downFloor()
             - GAME.floor * 3
         )
     -- Trevor Smithy
-    if M.GV == -1 then GAME.gravDelay = GravityTimer[3][GAME.negFloor] end -- not possible but kept here just in case
-    if M.GV > 0 then GAME.gravDelay = GravityTimer[M.GV][GAME.negFloor] end
+    if M.GV ~= 0 then GAME.gravDelay = GravityTimer[M.GV][GAME.negFloor] end
 
     -- Text & SFX
     GAME.showFloorText(-GAME.negFloor, NegFloors[GAME.negFloor].name, 6.2)

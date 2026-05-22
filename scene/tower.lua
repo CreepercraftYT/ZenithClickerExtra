@@ -1647,6 +1647,15 @@ function scene.overDraw()
         gc_ucs_move(0, h)
 
         -- Thruster (XP bar)
+        local screenWidth, screenHeight = love.graphics.getDimensions()
+        local ratio = screenWidth/screenHeight
+        local maxL, maxR = 0, 1600
+        if ratio > 1.6 then
+            maxL = -500*ratio+800
+            maxR = 500*ratio+800
+        else 
+            ratio = 1.6
+        end
         local rank = GAME.rank
         gc_setColor(rankColor[rank - 1] or COLOR.dL)
         if GAME.DPlock then gc_setAlpha(.26/eTAlpha) end
@@ -1665,23 +1674,24 @@ function scene.overDraw()
             end
             if rank >= 12 then
                 for i = 0, rank - 12 do
-                    if i < 44 then
-                        gc_rectangle('fill', 800 + 222 + 15 * i, 955, 10, 32)
-                        gc_rectangle('fill', 800 - 222 - 15 * i, 955, -10, 32)
+                    if i < 31.6 * ratio - 12 then
+                        gc_rectangle('fill', 800 + 222 + 14.9 * i, 955, 10, 32)
+                        gc_rectangle('fill', 800 - 222 - 14.9 * i, 955, -10, 32)
                     end
                 end
             end
-            if rank >= 56 then
-                for i = 0, rank - 55 do
+            if rank >= 31.6 * ratio then
+                local boxWidth = 32
+                for i = 1, rank - floor(31.6 * ratio) do
                     gc_setColor(min(1-(i+1)/100, 1), (i)/100, 0)
                     gc_setAlpha(1/eTAlpha)
-                    gc_rectangle('fill', 1662, 940 - 13 * i, 32, 8)
-                    gc_rectangle('fill', -62, 940 - 13 * i, -32, 8)
+                    gc_rectangle('fill', maxR-boxWidth, 950 - 13.3 * i, boxWidth, 9)
+                    gc_rectangle('fill', maxL+boxWidth, 950 - 13.3 * i, -boxWidth, 9)
                 end
-                gc_setColor(min(1-(rank-55)/100, 1), (rank-55)/100, 0)
+                gc_setColor(min(1-(rank-floor(31.6 * ratio))/100, 1), (rank-floor(31.6 * ratio))/100, 0)
                 gc_setAlpha(1/eTAlpha)
-                gc_mDraw(TEXTS.rank, 1662-32, 945 - 13 * (rank-55), 0, .626)
-                gc_mDraw(TEXTS.rank, -62+32, 945 - 13 * (rank-55), 0, .626)
+                gc_mDraw(TEXTS.rank, maxR-boxWidth*2, 950 - 13.3 * (rank-floor(31.6 * ratio)), 0, .626)
+                gc_mDraw(TEXTS.rank, maxL+boxWidth*2, 950 - 13.3 * (rank-floor(31.6 * ratio)), 0, .626)
             end
         end
         gc_setColor(rankColor[rank - 1] or COLOR.dL)
