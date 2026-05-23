@@ -945,19 +945,20 @@ scene.widgetList = {
                 MSG('error', "Cannot import data from future versions\nPlease update your game first!")
                 SFX.play('staffwarning')
                 return
-            elseif res1.mod and res1.mod ~= 'vanilla' and res1.mod ~= 'easyMode' then
+            elseif res1.mod and res1.mod ~= 'vanilla' and res1.mod ~= 'Extra' then
                 local modText = "Cannot import data from a different modded version"
                 if res1.mod == "A Fool's Mod" then modText = "The Creator thinks you're foolish for trying to use that here"
                 elseif res1.mod == "evilvile" then modText = "The Creator wants nothing to do with something that evil"
                 elseif res1.mod == "shimmer" then modText = "The Creator asks you to keep your sparkling water away from his creation"
                 elseif res1.mod == "unabstracted" then modText = "The Creator prefers his work abstract"
-                elseif res1.mod == "finalmixbeg" then modText = "The Creator rejects your chakras and magics" end
+                elseif res1.mod == "finalmixbeg" then modText = "The Creator rejects your chakras and magics"
+                elseif res1.mod == "easyMode" then modText = "The Creator wants you to suffer and unlock everything again :trollface:" end
                 MSG('dark', modText)
                 SFX.play('staffwarning')
                 return
             end
             TABLE.update(STAT, res1)
-            STAT.mod = 'easyMode'
+            STAT.mod = 'Extra'
             BEST, ACHV = res2, res3
             setmetatable(BEST.highScore, Metatable.best_highscore)
             GAME.refreshLockState()
