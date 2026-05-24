@@ -5,6 +5,7 @@ local scene = {}
 -- 1. Video & Audio
 -- 2. Utils
 -- 3. Album
+-- 4. ZCEM
 local page = 1
 local maxPage = 3
 local uidList = {} ---@type ({uid: string, modTime?: string} | false)[]
@@ -106,6 +107,9 @@ local bgmHeight = {
 
 local function refreshWidgets()
     for _, W in next, scene.widgetList do W:setVisible() end
+    if SongNamePlaying == 'teral' or SongNamePlaying == 'terael' then
+        scene.widgetList.loops:setVisible(false)
+    end
 end
 
 local function timePast(t1, t2)
@@ -312,11 +316,12 @@ local playing
 function scene.update(dt)
     if SongNamePlaying ~= playing then
         refreshSongInfo()
+        refreshWidgets()
         playing = SongNamePlaying
     end
-    if page == 3 and (BgmPlaying == 'tera' or BgmPlaying == 'terar') then
-        GAME.height = GAME.height + dt * (BgmPlaying == 'tera' and 20 or 42) * (GAME.height >= 1650 and .2 or 1)
-        if GAME.height >= 1726 then GAME.bgH, GAME.height = -30, -30 end
+    if page == 3 and (BgmPlaying == 'tera' or BgmPlaying == 'terar' or BgmPlaying == 'terae' or BgmPlaying == 'teral' or BgmPlaying == 'terael') then
+        GAME.height = GAME.height + dt * (BgmPlaying == 'tera' and 20 or BgmPlaying == 'terae' and 78 or BgmPlaying == 'teral' and 7 or BgmPlaying == 'terael' and 26 or 42) * (GAME.height >= 1650 and .2 or 1)
+        if GAME.height >= 1726 and (BgmPlaying ~= 'terae' or BgmPlaying == 'terael') or GAME.height >= 6200 then GAME.bgH, GAME.height = -30, -30 end
         dt = dt * 2.6
     end
     GAME.bgH = MATH.expApproach(GAME.bgH, GAME.height, dt * 1.6)
@@ -1367,7 +1372,7 @@ local page3 = {
         end,
     },
     WIDGET.new { -- no loop
-        type = 'button',
+        name = 'loops', type = 'button',
         x = baseX + 450, y = albumY + 80, w = 200, h = 50,
         color = clr.L,
         fontSize = 30, textColor = clr.LT, text = "NO LOOPS",
@@ -1411,7 +1416,7 @@ for i = 0, 10 do
     }
 end
 albumBtn {
-    x = baseX + 450 - 200, y = baseY + 690, w = 120,
+    x = baseX + 450 - 200, y = baseY + 670, w = 150, h = 60,
     color = bgmColors.tera,
     text = "TERA",
     onClick = function()
@@ -1421,7 +1426,7 @@ albumBtn {
     visibleFunc = function() return page == 3 and ACHV.blazing_speed end,
 }
 albumBtn {
-    x = baseX + 450, y = baseY + 690, w = 120,
+    x = baseX + 450, y = baseY + 670, w = 150, h = 60,
     color = bgmColors.fomg,
     fontSize = 50,
     text = "FΩ",
@@ -1433,7 +1438,7 @@ albumBtn {
     visibleFunc = function() return page == 3 and STAT.maxHeight >= 6200 end,
 }
 albumBtn {
-    x = baseX + 450 + 200, y = baseY + 690, w = 120,
+    x = baseX + 450 + 200, y = baseY + 670, w = 150, h = 60,
     color = bgmColors.terar,
     text = "TERAR",
     onClick = function()
@@ -1441,6 +1446,36 @@ albumBtn {
         refreshSongInfo()
     end,
     visibleFunc = function() return page == 3 and ACHV.blazing_speed and BEST.highScore.rEX >= Floors[9].top end,
+}
+albumBtn {
+    x = baseX + 450 - 200, y = baseY + 750, w = 150, h = 60,
+    color = bgmColors.tera,
+    text = "TERAL",
+    onClick = function()
+        PlayBGM('teral')
+        refreshSongInfo()
+    end,
+    visibleFunc = function() return page == 3 and ACHV.uneasy end,
+}
+albumBtn {
+    x = baseX + 450, y = baseY + 750, w = 150, h = 60,
+    color = bgmColors.tera,
+    text = "TERAEL",
+    onClick = function()
+        PlayBGM('terael')
+        refreshSongInfo()
+    end,
+    visibleFunc = function() return page == 3 and ACHV.uneasy and ACHV.programmer_gamer >= 10 end,
+}
+albumBtn {
+    x = baseX + 450 + 200, y = baseY + 750, w = 150, h = 60,
+    color = bgmColors.tera,
+    text = "TERAE",
+    onClick = function()
+        PlayBGM('terae')
+        refreshSongInfo()
+    end,
+    visibleFunc = function() return page == 3 and ACHV.programmer_gamer >= 10 end,
 }
 
 -- Apply visibility functions if not set

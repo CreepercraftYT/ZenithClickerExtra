@@ -10,6 +10,7 @@ local clr = {
     cbFrame = { COLOR.HEX '6A82A7FF' },
 }
 local colorRev = false
+local MusicPlayer = false
 local bpmMode = false
 local lastNonTera = 'f0'
 local mode = ''
@@ -434,10 +435,11 @@ scene.widgetList = {
         sound_hover = 'menutap',
         fontSize = 50, text = "GAME PLAY", textColor = clr.LT,
         onClick = function()
-            MusicPlayer = not MusicPlayer
+            --MusicPlayer = not MusicPlayer
             bpmMode = true
             refreshWidgets()
             IssueAchv('music_man')
+            SCN.go('conf', 'none')
         end,
     },
     -- BPM button is shared with MP options
