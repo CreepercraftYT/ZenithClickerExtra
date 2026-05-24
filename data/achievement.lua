@@ -2240,8 +2240,34 @@ local d = {
         desc = [[HFD with EX rGV rIN]],
         quote = [[She watches from the Omniverse...]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2600),
-        hide = function() return GAME.completion.GV == 0 or GAME.completion.IN == 0 end,
-    }
+        hide = function() GAME.completion.GV == 0 or GAME.completion.IN == 0 end,
+    },
+    { -- is_one_of_mine
+        id = 'is_one_of_mine',
+        name = "And It Is One Of Mine",
+        desc = [[HAR without manual commits WU eEX, uGV, eDH, and eAS +S]],
+        quote = [["Time rewards the patient ones..."]],
+        credit = "@Rodinia",
+        rank = floorRank(1, 3, 5, 7, 9, 10, 6200),
+        type = 'unranked',
+    },
+    { -- absolute_eye
+        ex = true,
+        id = 'absolute_eye',
+        name = "Absolute-Eye",
+        desc = [[HFD with uGV uIN]],
+        quote = [[The Absolute Eye can see the fastest objects in the darkest darkness.]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2600),
+        hide = function() return GAME.completion.GV == 1 or GAME.completion.IN == 1 end,
+    },
+    { -- ainidor
+        id = 'ainidor',
+        name = "Ainidor",
+        desc = [[HFD with uEX uGV uIN]],
+        quote = [["Have you not learned your lesson!?"]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2600),
+        hide = function() return GAME.completion.EX == 0 or GAME.completion.GV == 0 or GAME.completion.IN == 0 end,
+    },
 }
 
 local compFunc = {

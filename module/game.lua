@@ -2011,10 +2011,22 @@ function GAME.refreshCurrentCombo()
             if GAME.enightcore then
                 comboName = [["BUT IT ISN'T ONE OF MINE"]]
                 GAME.customUltraCombo = true
+            elseif GAME.slowmo then
+                comboName = [["AND IT IS ONE OF MINE"]]
+                GAME.customUltraCombo = true
             else
                 comboName = [["PATIENCE IS A VIRTUE..."]]
                 GAME.customUltraCombo = false
             end
+        elseif comboName == '"TERROR-INSTINCT"' then
+            comboName = [["ABSOLUTE-EYE"]]
+            GAME.customUltraCombo = true
+        elseif comboName == '"RODINIA"' then
+            comboName = [["RODINIA+"]]
+            GAME.customUltraCombo = true
+        elseif comboName == '"AINIDOR"' then
+            comboName = [["AINIDOR"]]
+            GAME.customUltraCombo = true
         elseif comboName == '"THE OVERWHELMED SMITHY"' then
             comboName = '"THE PARALYZED SMITHY"'
         elseif GAME.badTime and not GAME.badTimeStarted then
@@ -2056,6 +2068,8 @@ function GAME.refreshCurrentCombo()
     else
         if comboName == '"PATIENCE IS A VIRTUE"' and GAME.enightcore then
             comboName = [["BUT IT ISN'T ONE OF MINE"]]
+        elseif comboName == '"PATIENCE IS A VIRTUE"' and GAME.slowmo then
+            comboName = [["AND IT IS ONE OF MINE"]]
         elseif uneasyMode then -- if Uneasy Mode
             IssueAchv('uneasy')
             if comboName == 'EASY HOLDLESS ALL-SPIN' then
@@ -3572,7 +3586,16 @@ function GAME.finish(reason)
     if (GAME.teramusic or GAME.teraLostHeight or GAME.teraComplete) and M.EX == -1 and M.GV == 2 and URM and M.DH == -1 and M.AS == -1 and M.NH == 0 and M.MS == 0 and M.VL == 0 and M.IN == 0 and M.DP == 0 and GAME.enightcore then
         SubmitAchv('one_of_mine', GAME.achv_noManualCommitH or GAME.roundHeight) 
     end
-    -- Perfectly Balanced
+    if M.EX == -1 and M.GV == 2 and URM and M.DH == -1 and M.AS == -1 and M.NH == 0 and M.MS == 0 and M.VL == 0 and M.IN == 0 and M.DP == 0 and GAME.slowmo then
+        SubmitAchv('is_one_of_mine', GAME.achv_noManualCommitH or GAME.roundHeight) 
+    end
+    if M.EX == 0 and M.GV == 2 and URM and M.DH == 0 and M.AS == 0 and M.NH == 0 and M.MS == 0 and M.VL == 0 and M.IN == 2 and M.DP == 0 then
+        SubmitAchv('absolute_eye', GAME.roundHeight) 
+    end
+    if M.EX == 2 and M.GV == 2 and URM and M.DH == 0 and M.AS == 0 and M.NH == 0 and M.MS == 0 and M.VL == 0 and M.IN == 2 and M.DP == 0 then
+        SubmitAchv('ainidor', GAME.roundHeight) 
+    end
+    -- Perfectly Balanced...
     if GAME.comboMP == 4 then
         local revCount = GAME.comboStr:count('r')
         local easyCount = GAME.comboStr:count('e')
@@ -3580,6 +3603,7 @@ function GAME.finish(reason)
             SubmitAchv('perfectly_balanced', GAME.roundHeight)
         end
     end
+    -- ...As All Things Should Be.
 
     if GAME.comboStr == 'eDHeDPeGVeINeMSeNH' and GAME.height >= 1650 then
         MSG("bright","Secret Dev Commentary Available", 3.5)
