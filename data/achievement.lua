@@ -2233,6 +2233,15 @@ local d = {
         hide = TRUE,
     },
     { title = "Extra Mod Achievements" },
+    { -- rGVIN
+        ex = true,
+        id = 'rGVIN',
+        name = "Fading Instinct",
+        desc = [[HFD with rGV IN]],
+        quote = [["EXCELLENT, Try again to be a Grand Master!"]],
+        rank = floorRank(1, 3, 5, 7, 9, 10, 2600),
+        hide = function() return GAME.completion.GV == 0 end,
+    },
     { -- EXrGVrIN
         ex = true,
         id = 'EXrGVrIN',
@@ -2240,7 +2249,7 @@ local d = {
         desc = [[HFD with EX rGV rIN]],
         quote = [[She watches from the Omniverse...]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2600),
-        hide = function() GAME.completion.GV == 0 or GAME.completion.IN == 0 end,
+        hide = function() return GAME.completion.GV == 0 or GAME.completion.IN == 0 end,
     },
     { -- is_one_of_mine
         id = 'is_one_of_mine',
@@ -2266,7 +2275,7 @@ local d = {
         desc = [[HFD with uEX uGV uIN]],
         quote = [["Have you not learned your lesson!?"]],
         rank = floorRank(1, 3, 5, 7, 9, 10, 2600),
-        hide = function() return GAME.completion.EX == 0 or GAME.completion.GV == 0 or GAME.completion.IN == 0 end,
+        hide = TRUE
     },
 }
 

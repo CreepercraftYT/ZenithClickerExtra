@@ -209,11 +209,16 @@ return {
     ['EX NH MS GV VL DH IN AS DP'] = STRING.trimIndent [[
         Yeah along with DP, it's still Swamp Water, cuz I think it doesn't really increase much difficulty.
     ]],
-
+    ['rGV IN'] = STRING.trimIndent [[
+        An easier version of "Terror-Instinct", referencing TGM3's Fading Roll,
+        which is when you play during the Master Mode Credits with fading invisible pieces.
+        Said roll can NEVER award the player the GM grade, and getting the highest grades is a nightmare
+        due to the reduced grade scoring.
+    ]],
     ['rGV rIN'] = STRING.trimIndent [[
         Formerly called "The Grandmaster+", reversed version of The Grandmaster, which is closer to its original meaning.
-        Well, you can see that ZC's upright mods are kinda too easy, and the reversed mods have similar difficulty with QP2's normal mods.
-        This is intended, to let everyone be able to enjoy playing with mods.
+        Named after the subtitle of "[REDACTED] The Grand Master 3: Terror-Instinct" and in honor to the M-Roll,
+        which is when you play during the Master Mode Credits with fully invisible pieces.
     ]],
     ['EX rGV rIN'] = STRING.trimIndent [[
         The Celestial giantess, not the Supercontinent...
