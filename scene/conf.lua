@@ -1744,7 +1744,7 @@ albumBtn {
         PlayBGM('terael')
         refreshSongInfo()
     end,
-    visibleFunc = function() return page == 3 and ACHV.uneasy and ACHV.programmer_gamer >= 10 end,
+    visibleFunc = function() return page == 3 and ACHV.uneasy and ACHV.programmer_gamer and ACHV.programmer_gamer >= 1650 end,
 }
 albumBtn {
     x = baseX + 450 + 200, y = baseY + 750, w = 150, h = 60,
@@ -1754,7 +1754,7 @@ albumBtn {
         PlayBGM('terae')
         refreshSongInfo()
     end,
-    visibleFunc = function() return page == 3 and ACHV.programmer_gamer >= 10 end,
+    visibleFunc = function() return page == 3 and ACHV.programmer_gamer and ACHV.programmer_gamer >= 1650 end,
 }
 
 -- Page 4
