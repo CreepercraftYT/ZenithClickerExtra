@@ -282,6 +282,7 @@ GAME.time = 0
 GAME.spikeCounter = 0
 GAME.spikeTimer = 0
 GAME.floorTime = 0
+GAME.f10Time = love.timer.getTime()
 GAME.reviveTime = false
 GAME.floor = 1
 GAME.rank = 1
@@ -763,8 +764,6 @@ function GAME.anim_setMenuHide(t)
     w.conf:resetPos()
     w.about.x = cLerp(-60, 90, t * 1.5)
     w.about:resetPos()
-    w.zcem.x = cLerp(-60, 90, t * 1.5)
-    w.zcem:resetPos()
     MSG.setSafeY(75 * (1 - GAME.uiHide))
 end
 
@@ -1562,6 +1561,7 @@ function GAME.upFloor()
 
     -- End game
     if GAME.floor >= 10 then
+        GAME.f10Time = love.timer.getTime()
         if GAME.gigaspeed and #GAME.getHand(true) == 0 and GAME.pieceCount() == 0 and GAME.totalQuest <= 7 then IssueAchv('hyperplonk') end
         if GAME.gigaspeed or GAME.smithyMode then
             if GAME.time < STAT.minTime then
@@ -3292,7 +3292,6 @@ function GAME.start()
     end
     if URM and M.VL == 2 and not UltraVlCheck('start') then return end
     TASK.removeTask_code(Task_MusicEnd)
-    MusicPlayer = false
 
     GAME.omega = false
     GAME.negFloor = 1
@@ -3535,7 +3534,18 @@ function GAME.start()
     if M.DP ~= 0 then IssueAchv('intended_glitch') end
 end
 
----@param reason 'forfeit' | 'wrong' | 'time'
+function GAME.clearResultStat()
+    TEXTS.endHeight:set("")
+    TEXTS.endFloor:set("")
+    TEXTS.endResult:set("")
+    TEXTS.zpChange:set("")
+    TEXTS.floorTime:set("")
+    TEXTS.rankTime:set("")
+    TEXTS.easyModeVersion:set("")
+    GAME.resIB:clear()
+end
+
+---@param reason 'forfeit' | 'wrong' | 'time' | 'reset' 
 function GAME.finish(reason)
     SCN.scenes.tower.widgetList.help:setVisible(not GAME.zenithTraveler)
     SCN.scenes.tower.widgetList.help2:setVisible(not GAME.zenithTraveler)
@@ -4150,14 +4160,7 @@ function GAME.finish(reason)
         end
         SaveStat()
     else
-        TEXTS.endHeight:set("")
-        TEXTS.endFloor:set("")
-        TEXTS.endResult:set("")
-        TEXTS.zpChange:set("")
-        TEXTS.easyModeVersion:set("")
-        TEXTS.floorTime:set("")
-        TEXTS.rankTime:set("")
-        GAME.resIB:clear()
+        GAME.clearResultStat()
     end
     ReleaseAchvBuffer()
 
@@ -4324,6 +4327,7 @@ function GAME.update(dt)
     -- Timers
     -- Trevor Smithy
     local timerMulMod = 1 * (GAME.eslowmo and not GAME.badTime and 0.75 or 1) * (GAME.ecloseCard and not GAME.badTime and 2 or 1)
+    if STAT.srTimer_life then STAT.srTimer_game = STAT.srTimer_game + dt end
     GAME.time = GAME.time + dt * (GAME.timerMul * timerMulMod)
     local r = min(GAME.rank, 62)
     GAME.rankTimer[r] = GAME.rankTimer[r] + dt
