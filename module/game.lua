@@ -1990,6 +1990,8 @@ function GAME.refreshCurrentCombo()
         comboName = '"THE OVERWHELMED SMITHY"'
     elseif comboName == "EASY INVISIBLE MESSY TRANQUIL HOLDLESS DOUBLE HOLE GRAVITY SPUN DUO" then
         comboName = '"THE SWAMPED SMITHY"'
+    elseif comboName == "VISIBLE TIDY DESPERATE MODERATE SAVED OMNI-SPIN LIFTED FRIENDLY TYRANNY" then
+        comboName = '"THE UNDERWHELMED SMITHY"'
     end
     if not GAME.playing and GAME.anyUltra and #hand > 0 then
         -- SPECIAL - Trevor Smithy
@@ -2017,6 +2019,8 @@ function GAME.refreshCurrentCombo()
             end
         elseif comboName == '"THE OVERWHELMED SMITHY"' then
             comboName = '"THE PARALYZED SMITHY"'
+        elseif comboName == '"THE UNDERWHELMED SMITHY"' then
+            comboName = '"THE WHELMED SMITHY"'
         elseif GAME.badTime and not GAME.badTimeStarted then
             SCN.scenes.tower.widgetList.reset:setVisible(false)
             SCN.scenes.tower.widgetList.help:setVisible(false)
