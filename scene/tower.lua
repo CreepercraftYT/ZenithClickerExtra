@@ -557,7 +557,7 @@ function scene.mouseDown(x, y, k)
         switchVisitor(false)
         return true
     end
-    if k == 3 then return true end
+    if k == 3 and GAME.playing then return true end
     HoldingButtons['mouse' .. k] = true
     GAME.nixPrompt('keep_no_mouse')
     GAME.noMouseOrSpin = false
@@ -578,7 +578,7 @@ function scene.mouseUp(x, y, k)
     if GAME.zenithTraveler then return end
     GAME.nixPrompt('keep_no_mouse')
     GAME.noMouseOrSpin = false
-    if k == 3 then return end
+    if k == 3 and GAME.playing then return end
 
     --if getBtnPressed() > 1 + (URM and M.VL == 2 and 0 or floor(M.VL / 2)) then return end
     if getBtnPressed() > (URM and M.VL == 2 and 0 or M.VL == -1 and 0 or floor(M.VL / 2)) then return end
