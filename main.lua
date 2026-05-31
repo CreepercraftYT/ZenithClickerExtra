@@ -25,7 +25,6 @@ FILE.createDirectory({
     'customAssets/tower',
 })
 
-
 ---@return any love.Texture
 local function assets(path) return FILE.exist('customAssets/' .. path) and 'customAssets/' .. path or 'assets/' .. path end
 local function q(oy, n, size)
@@ -150,20 +149,23 @@ TEXTURE = {
         rEX = q2(0945, 1331, 315, 332),
         rDP = q2(1260, 1016, 419, 378),
     },
-    EX = { lock = '_lockover_9', front = assets 'card/expert.png', back = assets 'card/expert-back.png' },
-    NH = { lock = '_lockfull_2', front = assets 'card/nohold.png', back = assets 'card/nohold-back.png' },
-    MS = { lock = '_lockfull_3', front = assets 'card/messy.png', back = assets 'card/messy-back.png' },
-    GV = { lock = '_lockfull_4', front = assets 'card/gravity.png', back = assets 'card/gravity-back.png' },
-    VL = { lock = '_lockfull_5', front = assets 'card/volatile.png', back = assets 'card/volatile-back.png' },
-    DH = { lock = '_lockfull_6', front = assets 'card/doublehole.png', back = assets 'card/doublehole-back.png' },
-    IN = { lock = '_lockfull_7', front = assets 'card/invisible.png', back = assets 'card/invisible-back.png' },
-    AS = { lock = '_lockfull_8', front = assets 'card/allspin.png', back = assets 'card/allspin-back.png' },
-    DP = { lock = '_lockover_?', front = assets 'card/duo.png', back = assets 'card/duo-back.png' },
+    EX = { lock = '_lockover_9', front = assets 'card/expert.png', frontPlanet = assets 'card/planet_expert.png', back = assets 'card/expert-back.png' },
+    NH = { lock = '_lockfull_2', front = assets 'card/nohold.png', frontPlanet = assets 'card/planet_nohold.png', back = assets 'card/nohold-back.png' },
+    MS = { lock = '_lockfull_3', front = assets 'card/messy.png', frontPlanet = assets 'card/planet_messy.png', back = assets 'card/messy-back.png' },
+    GV = { lock = '_lockfull_4', front = assets 'card/gravity.png', frontPlanet = assets 'card/planet_gravity.png', back = assets 'card/gravity-back.png' },
+    VL = { lock = '_lockfull_5', front = assets 'card/volatile.png', frontPlanet = assets 'card/planet_volatile.png', back = assets 'card/volatile-back.png' },
+    DH = { lock = '_lockfull_6', front = assets 'card/doublehole.png', frontPlanet = assets 'card/planet_doublehole.png', back = assets 'card/doublehole-back.png' },
+    IN = { lock = '_lockfull_7', front = assets 'card/invisible.png', frontPlanet = assets 'card/planet_invisible.png', back = assets 'card/invisible-back.png' },
+    AS = { lock = '_lockfull_8', front = assets 'card/allspin.png', frontPlanet = assets 'card/planet_allspin.png', back = assets 'card/allspin-back.png' },
+    DP = { lock = '_lockover_?', front = assets 'card/duo.png', frontPlanet = assets 'card/planet_duo.png', back = assets 'card/duo-back.png' },
     lockfull = assets 'card/lockfull.png',
     lockover = assets 'card/lockover.png',
     towerBG = { assets 'tower/f1.jpg', assets 'tower/f2.jpg', assets 'tower/f3.jpg', assets 'tower/f4.jpg', assets 'tower/f5.jpg', assets 'tower/f6.jpg', assets 'tower/f7.jpg', assets 'tower/f8.jpg', assets 'tower/f9.jpg', assets 'tower/f10.png' },
     moon = assets 'tower/moon.png',
+    revmoon = assets 'tower/revmoon.png',
+    urevmoon = assets 'tower/urevmoon.png',
     stars = assets 'tower/stars.png',
+    rodinia = assets 'tower/ZCEX_Rodinia_placeholder.png',
     warning = assets 'finalwarning.png',
 
     revive = {
@@ -1919,7 +1921,7 @@ function Daemon_Fast()
     local startBtnPtr = 1
     local resetBtnPtr = 1
 
-    local t1 = -.1
+    local t1 = 0
     local t = 0
     local b = 10
     local br = 20
@@ -1939,15 +1941,11 @@ function Daemon_Fast()
             end
 
             -- Messy position shaking/Hyperspeed Card Bounce
-            if T < t1 then t1 = -.1 end
-            if T > t1 + 2 * 60 / BgmData[BgmPlaying].bpm then
+            if T < t1 then t1 = 0 end
+            if T >= t1 + (2 * 60 / BgmData[BgmPlaying].bpm) then
                 t1 = T
-                --MSG('dark', T .. ', ' .. t1 .. ', ' .. bar)
-                --MSG('dark', BgmPlaying, 1)
-                --MSG('dark', T, 1)
-                --MSG('dark', ((BgmPlaying == 'tera' or BgmPlaying == 'teral' or BgmPlaying == 'terae' or BgmPlaying == 'terael') and T >= 68) or (BgmPlaying == 'terar' and T >= 52))
                 if ((BgmPlaying == 'tera' or BgmPlaying == 'teral' or BgmPlaying == 'terae' or BgmPlaying == 'terael') and T >= 68) and STAT.bounceTera or (BgmPlaying == 'terar' and T >= 52) and STAT.bounceTera then
-                    
+                    --TASK.yieldT(60 / BgmData[BgmPlaying].bpm)
                     for i = 1, deckSize do Cards[i].visY = (BgmPlaying == 'terar' and br or b)
                     b = -b
                     br = -br end

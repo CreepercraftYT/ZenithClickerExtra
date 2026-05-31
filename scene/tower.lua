@@ -903,8 +903,9 @@ function DrawBG(brightness, showRuler)
                 gc_setBlendMode('add')
                 gc_setColor(1, 1, 1, .8)
                 gc_draw(StarPS, SCR.w / 2, SCR.h / 2 + GAME.bgH * 2 * BgScale)
-                gc_mDraw(TEXTURE.moon, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 2202.84) * 2 * BgScale, 0, .2 * BgScale)
+                gc_mDraw(TEXTURE.rodinia, SCR.w / 2, SCR.h / 2 + (GAME.bgH - 6200) * 2 * BgScale, 0, .5 * BgScale)
                 gc_setBlendMode('alpha')
+                gc_mDraw((URM and GAME.anyRev and TEXTURE.urevmoon or GAME.anyRev and TEXTURE.revmoon or TEXTURE.moon), SCR.w / 2, SCR.h / 2 + (GAME.bgH - 2202.84) * 2 * BgScale, 0, .2 * BgScale)
 
                 -- Tower
                 if GAME.bgH < 1700 then

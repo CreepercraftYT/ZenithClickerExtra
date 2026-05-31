@@ -2297,6 +2297,24 @@ local page5 = {
             --if multiple then GAME.multiplePiecesActive = true end
         end,
     },
+    WIDGET.new { -- Bounce cards
+        name = 'planetArt', type = 'checkBox',
+        fillColor = ZCEXclr.cbFill,
+        frameColor = ZCEXclr.cbFrame,
+        textColor = ZCEXclr.T, text = "USE PLANET CARD ARTS",
+        x = baseX + 40, y = baseY + 60 + 120,
+        disp = function() return STAT.usePlanetArt end,
+        code = function()
+            --local multiple = GAME.multiplePiecesActive
+            MSG.clear()
+            STAT.usePlanetArt = not STAT.usePlanetArt
+            SFX.play('social_dm')
+            MSG('dark', "Planet Cards " .. (STAT.usePlanetArt and "ON" or "OFF"))
+            --GAME.multiplePiecesActive = false
+            SaveStat()
+            --if multiple then GAME.multiplePiecesActive = true end
+        end,
+    },
 }
 
 -- Apply visibility functions if not set
